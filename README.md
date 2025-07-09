@@ -2,6 +2,14 @@
 
 Парсер Twitter/X с использованием Playwright и SQLAlchemy
 
+## Установка Playwright
+
+Перед началом работы установите Playwright и необходимые браузеры:
+```bash
+pip install playwright
+playwright install
+```
+
 ## Установка
 
 1. Клонируйте репозиторий:
@@ -31,14 +39,6 @@ USERNAME=ваш_логин
 PASSWORD=ваш_пароль
 ```
 
-## Инициализация базы данных
-
-В начале работы вызовите функцию инициализации:
-```python
-from database.engine import init_db
-init_db()
-```
-
 ## Порядок запуска
 
 1. Сначала запустите файл для авторизации (auth):
@@ -54,8 +54,4 @@ init_db()
 
 ---
 
-- Для работы нужен Python 3.8+
-- Для Playwright потребуется установка браузеров:
-  ```bash
-  playwright install
-  ``` 
+- Для работы нужен Python 3.8+ 
