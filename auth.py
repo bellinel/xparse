@@ -1,14 +1,8 @@
 import time
 from playwright.sync_api import sync_playwright
-from dotenv import load_dotenv
-import os
-load_dotenv()
 
-USERNAME = os.getenv("USERNAME")
-PASSWORD = os.getenv("PASSWORD")
-print(USERNAME, PASSWORD)
 
-def save_auth_state(username: str, password: str, auth_file: str = "auth_state.json"):
+def save_auth_state(auth_file: str = "auth_state.json"):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         print('Запускаем браузер')
@@ -96,4 +90,4 @@ def save_auth_state(username: str, password: str, auth_file: str = "auth_state.j
 
 if __name__ == "__main__":
     # Первый запуск — логинимся, сохраняем сессию
-    save_auth_state(USERNAME, PASSWORD)
+    save_auth_state()
