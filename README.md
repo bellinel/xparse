@@ -2,14 +2,6 @@
 
 Парсер Twitter/X с использованием Playwright и SQLAlchemy
 
-## Установка Playwright
-
-Перед началом работы установите Playwright и необходимые браузеры:
-```bash
-pip install playwright
-playwright install
-```
-
 ## Установка
 
 1. Клонируйте репозиторий:
@@ -28,6 +20,11 @@ playwright install
 3. Установите зависимости:
    ```bash
    pip install -r requirements.txt
+   ```
+4. Установите Playwright и необходимые браузеры:
+   ```bash
+   pip install playwright
+   playwright install
    ```
 
 ## Переменные окружения
