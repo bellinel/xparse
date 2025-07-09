@@ -6,11 +6,11 @@ load_dotenv()
 
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
-
+print(USERNAME, PASSWORD)
 
 def save_auth_state(username: str, password: str, auth_file: str = "auth_state.json"):
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=False)
         print('Запускаем браузер')
         context = browser.new_context(
             user_agent=(
@@ -29,7 +29,8 @@ def save_auth_state(username: str, password: str, auth_file: str = "auth_state.j
         page.goto("https://x.com/i/flow/login")
 
         # Ввод логина
-        print('Вводим логин')
+        
+        username = input('Введите логин: ')
         page.wait_for_selector('input[autocapitalize="sentences"]').fill(username)
         page.mouse.move(200, 300)
         page.wait_for_timeout(500)
@@ -40,7 +41,7 @@ def save_auth_state(username: str, password: str, auth_file: str = "auth_state.j
 
         # Иногда просят ещё раз логин
         try:
-            print('Вводим логин')
+            
             page.wait_for_selector('input[data-testid="ocfEnterTextTextInput"]', timeout=5000)
             page.fill('input[data-testid="ocfEnterTextTextInput"]', username)
             time.sleep(1.5)
@@ -50,7 +51,8 @@ def save_auth_state(username: str, password: str, auth_file: str = "auth_state.j
             pass
 
         # Ввод пароля
-        print('Вводим пароль')
+        
+        password = input('Введите пароль: ')
         page.wait_for_selector('input[type="password"]', timeout=15000).fill(password)
         time.sleep(1)
         page.click('button:has-text("Войти")')
