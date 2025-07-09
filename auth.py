@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-LOGIN = os.getenv("LOGIN")
+USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
 
 
@@ -94,4 +94,4 @@ def save_auth_state(username: str, password: str, auth_file: str = "auth_state.j
 
 if __name__ == "__main__":
     # Первый запуск — логинимся, сохраняем сессию
-    save_auth_state(LOGIN, PASSWORD)
+    save_auth_state(USERNAME, PASSWORD)
