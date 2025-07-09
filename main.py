@@ -12,7 +12,7 @@ from database.engine import init_db
 def load_auth_and_read_posts_forever(file_path: str, auth_file: str = "auth_state.json", delay_sec: int = 10):
     init_db()
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         context = browser.new_context(storage_state=auth_file)
         page = context.new_page()
 
