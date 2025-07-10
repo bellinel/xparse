@@ -9,18 +9,18 @@ from database.engine import init_db
 
 
 
-def load_auth_and_read_posts_forever(file_path: str, auth_file: str = "auth_state.json", delay_sec: int = 10):
+def load_auth_and_read_posts_forever(file_path: str, auth_file: str = "auth_state.json"):
     init_db()
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(storage_state=auth_file)
         page = context.new_page()
 
-        while True:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                urls = [line.strip() for line in f if line.strip()]
+        
+        with open(file_path, 'r', encoding='utf-8') as f:
+            urls = [line.strip() for line in f if line.strip()]
 
-            for url in urls:
+        for url in urls:
                 print(f"Обрабатываем {url}")
                 try:
                     page.goto(url)
@@ -30,6 +30,8 @@ def load_auth_and_read_posts_forever(file_path: str, auth_file: str = "auth_stat
                     continue
 
                 tweets = page.query_selector_all('article[data-testid="tweet"]')
+                nickname = url.rstrip(')')
+                nickname = nickname.split('/')[-1]
                 if not tweets:
                     print("❌ Посты не найдены")
                     continue
@@ -43,17 +45,16 @@ def load_auth_and_read_posts_forever(file_path: str, auth_file: str = "auth_stat
                     tweet_el = post.query_selector('div[data-testid="tweetText"]')
                     tweet = tweet_el.text_content() if tweet_el else ''
 
-                    nickname_el = post.query_selector('a[role="link"] div[dir="ltr"]')
-                    nickname = nickname_el.inner_text() if nickname_el else '—'
-
+                    
+              
                     post_in_db = add_post(nickname, tweet)
                     if post_in_db:
                         print(f"✅ Пост {nickname} сохранен в базу данных")
                     break
                 time.sleep(2)  # небольшая пауза между URL
 
-            print(f"Закончили обход всех ссылок, ждем {delay_sec} секунд перед следующим циклом...")
-            time.sleep(delay_sec)
+        print(f"Закончили обход всех ссылок")
+               
 
        
 
