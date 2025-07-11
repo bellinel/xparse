@@ -1,4 +1,5 @@
 
+from datetime import datetime
 import time
 from playwright.sync_api import sync_playwright
 
@@ -46,8 +47,24 @@ def load_auth_and_read_posts_forever(file_path: str, auth_file: str = "auth_stat
                     tweet = tweet_el.text_content() if tweet_el else ''
 
                     
-              
-                    post_in_db = add_post(nickname, tweet)
+                    time_element = page.query_selector('time')
+                    datetime_str = time_element.get_attribute('datetime')
+                    dt = datetime.strptime(datetime_str, "%Y-%m-%dT%H:%M:%S.000Z")
+
+                    formatted = dt.strftime("%d.%m.%Y %H:%M:%S")
+                    try:
+                        image = post.query_selector('img[alt="Image"]')
+                        image_url = image.get_attribute('src')
+                        if image_url:
+                            image_url = image_url.replace("name=small", "name=orig")
+                        else:
+                            image_url = 'Нет изображения'
+                    except:
+                        image_url = 'Нет изображения'
+
+
+
+                    post_in_db = add_post(nickname, tweet, image_url, formatted)
                     if post_in_db:
                         print(f"✅ Пост {nickname} сохранен в базу данных")
                     break
